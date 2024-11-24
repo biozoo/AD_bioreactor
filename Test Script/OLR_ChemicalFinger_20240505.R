@@ -1,7 +1,7 @@
 # R code for performing MDR S-map anaysis
 rm(list = ls());gc()
 # Set path
-Root_Path <- 'D:'
+Root_Path <- 'C:'
 Sub_Path <- '\\data\\Cooperation\\Prodigio\\'
 OPath <- paste(Root_Path,Sub_Path,sep='')
 setwd(OPath)
@@ -101,8 +101,6 @@ envi12t[,c('date','status')]=envi34[,c('date','status')];
 envi12t[,'reactor']=envi12t[1,'reactor'];
 envi12=envi12t
 
-#envi12[24,c("TS..mg.L.",'ash..mg.L.',"VS..mg.L.")]=envi12[24,c("TS..mg.L.",'ash..mg.L.',"VS..mg.L.")]/10
-
 
 olr34=filter(olrall,Reactor=='R3')
 olr34=olr34[as.Date(olr34[,'Date'],'%d/%m/%Y')%in%as.Date(envi34[,'date'],'%m/%d/%Y'),]
@@ -121,48 +119,6 @@ olr34[,c('CH4....')]=envi34[,c('CH4_percentage')]
 #cbind(ch4p_olr=olr34[,'CH4....'],ch4_olr=olr34[,'mL.CH4.d'],ch4_finger=envi34[,'mL.CH4.d'])
 nsp=NCOL(envi34)
 nd=NROW(envi34)
-
-
-###################
-## Plot environmental variables
-envivb2=c('pH','ORP','T..ºC.','NH4...mgN.L.','Qbiogas..mL.day.', 'mL.CH4.d')
-tind=1:46
-tipp=37
-tipp2=43
-win.graph(90,60);par(mfcol=c(2,3),mar=c(4,4,1,1))
-for(i in 1:length(envivb2)){
-  
-  y.t=cbind(olr34,shockd34)[,envivb2[i]]
-  y.t1=cbind(olr12,shockd12)[,envivb2[i]]
-  plot(y.t~tind,type='o',xlab='Day',ylab=envivb2[i],pch=16,
-       cex=2,lwd=2,ylim=range(c(y.t,y.t1),na.rm=T))
-  lines(y.t1~tind,type='o',col='grey',pch=16,cex=2,lwd=2)
-  polygon(x=c(tipp,tipp2,tipp2,tipp),y=rep(mag_scale(range(c(y.t,y.t1),na.rm=T)),each=2), col="orange",density=15, border="white")
-  if(i==2)legend('topleft',c('Control','Experiment'),bty='n',lty=c(1,1),col=c('black','grey'),pch=c(16,1),cex=2)
-}
-
-
-if(F){
-  win.graph(40,90);
-  par(mfrow=c(3,1),mar=c(4,4,1,1))
-  #for(i in 1:NCOL(stable.t)){
-  for(i in c(1,2,4)){
-    x.t=c((1:(tipp2-1))+0.5)
-    y.t=stable.t[,i]
-    y.t1=stable.t1[,i]
-    if(i==1){x.t=x.t[-c(1:8)];y.t=y.t[-c(1:8)]}
-    plot(y.t~x.t,ylab=colnames(stable.t)[i],type='o',xlab='Time',pch=16,cex=2,lwd=2,ylim=range(c(y.t,y.t1),na.rm=T))
-    if(i!=1){
-      lines(y.t1~x.t,type='o',pch=1,cex=2,lwd=2,col='grey')
-    } 
-    abline(h=1,lty=2)
-    polygon(x=c(tipp,tipp2,tipp2,tipp),y=rep(mag_scale(range(c(y.t,y.t1),na.rm=T)),each=2), col="orange",density=15, border="white")
-    legend('topleft',c('Control','Experiment'),bty='n',lty=c(1,1),col=c('black','grey'),pch=c(16,1))
-  }
-}
-
-
-
 
 finger12=envi12[,-c(1:9)]
 finger34=envi34[,-c(1:9)]
@@ -289,11 +245,11 @@ if(out.sample){nout <- 2}else{nout <- 0}  # number of out-of-sample
 
 #(da.name <- 'OLR_R1_tau1p_finger')
 #do <- ada12.ind
-(da.name <- 'OLR_R3_crn_verc')
-do <- crn34
+#(da.name <- 'OLR_R3_crn_verc')
+#do <- crn34
 
-#(da.name <- 'OLR_R1_otu_verc')
-#do <- otu12
+(da.name <- 'OLR_R3_otu_verc')
+do <- otu34
 
 
 ndo <- nrow(do)
@@ -357,11 +313,12 @@ for(i in 1:ncol(ds)){
   
   DEVresult = rbind(DEVresult, data.frame(variable=colnames(ds)[i], devts))
   para.optR = rbind(para.optR, c(variable=colnames(ds)[i], para.optt))
+  #}
   rm(list = c('param.opt.a', 'devts'));gc()
   time.used <- proc.time() - t.begin
   cat("effect", i, "in sample completed:", time.used[3],"sec\n")
 }
 
-write.csv(DEVresult,paste(da.name,'_DEV_TimeSeries.csv',sep=''),row.names=F)
-write.csv(para.optR,paste(da.name,'_DEV_Optparameter.csv',sep=''),row.names=F)
+write.csv(DEVresult,paste(da.name,'_DEV_ver2_TimeSeries.csv',sep=''),row.names=F)
+write.csv(para.optR,paste(da.name,'_DEV_ver2_Optparameter.csv',sep=''),row.names=F)
 
