@@ -24,6 +24,7 @@ tind.o <- 1:nd
 #####################################################################################################################################
 # Data loading
 clasdo <- read.csv('./Data/demo_otu_taxa.csv',header=T)
+rownames(clasdo) <- clasdo[,'OTU']
 crnotu1 <- read.csv('./Data/Demo_Control_otucrn_abundance.csv',header=T,stringsAsFactors = F)
 crnotu3 <- read.csv('./Data/Demo_Perturbed_otucrn_abundance.csv',header=T,stringsAsFactors = F)
 
