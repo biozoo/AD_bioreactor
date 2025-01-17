@@ -23,6 +23,7 @@ Function_DEV.R
 Function_MDR.R
 Function_MDR_inferM.R: MDR S-map for generating non-square interaction Jacobian matrices.
 Function_network.R
+
 2. Output
 Derived datasets from the computations performed in the R scripts (Sections 1a and 1b).
 
