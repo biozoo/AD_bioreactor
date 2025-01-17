@@ -1,4 +1,4 @@
-**#AD_bioreactor
+**AD_bioreactor
 **
 This repository contains R scripts, data, and outputs supporting the main findings presented in Figures 1–5. The materials are organized into three sections:
 
