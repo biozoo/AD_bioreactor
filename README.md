@@ -1,7 +1,8 @@
-AD_bioreactor
+**#AD_bioreactor
+**
 This repository contains R scripts, data, and outputs supporting the main findings presented in Figures 1–5. The materials are organized into three sections:
 
-1. Code
+_1. Code_
 a) Scripts for Generating Figures:
 Fig1_Demo_DEV_CH4.R: Generates Figure 1.
 Fig2_3_Demo_Heatmap.R: Generates Figures 2 and 3 heatmaps.
@@ -24,10 +25,10 @@ Function_MDR.R
 Function_MDR_inferM.R: MDR S-map for generating non-square interaction Jacobian matrices.
 Function_network.R
 
-2. Output
+_2. Output_
 Derived datasets from the computations performed in the R scripts (Sections 1a and 1b).
 
-3. Data
+_3. Data_
 a) Supplementary Tables:
 Extended Data Tables 3–5 (Extended Data Table 3-5.xlsx): Details of selected OTUs, metabolites, and network properties.
 b) Reactor Datasets:
