@@ -1,0 +1,86 @@
+"Variable","CCM_Control","CCM_Perturbed"
+"Chem_Mean_Int_strength",0,0.703491786571438
+"Bio -> Chem",0,0.677304430040351
+"Chem -> Bio",0,0.529690336722416
+"Bio_Mean_Int_strength",0.234963540953415,0.758145114085681
+"VFA_Mean_Int_strength",0,0.894680708696728
+"Methanogen -> VFA",0,0.766440190141009
+"Acetogen -> VFA",0,0.800086114272862
+"Other_taxa -> VFA",0,0.609342387683403
+"VFA -> Fingerprint",0,0.373590209775731
+"Fingerprint_Mean_Int_strength",0,0.7553739154758
+"Methanogen -> Fingerprint",0.0485355154335693,0.493077681051382
+"Other_taxa -> Fingerprint",0,0.418358781081142
+"Fingerprint -> Methanogen",0.296440527093482,0.562786260074917
+"Other_taxa -> Methanogen",0.107964814955849,0.454843572033314
+"VFA -> Acetogen",0,0.251204514928301
+"Fingerprint -> Acetogen",0,0.719036879916058
+"Methanogen -> Acetogen",0.116406207266126,0.356479353858297
+"Acetogen_Mean_Int_strength",0,0.621229866729687
+"Other_taxa -> Acetogen",0,0.846331875864793
+"VFA -> Other_taxa",0,0.554919469385043
+"Fingerprint -> Other_taxa",0,0.473974614448386
+"Methanogen -> Other_taxa",0,0.607252886010574
+"Other_taxa_Mean_Int_strength",0.186702198958991,0.787218360564904
+"Chem_sdstrength.all",0,0.529791521561757
+"Bio_sdstrength.all",0,0.385603976489485
+"Bio_deig",0,0.60189778631906
+"Bio_Competition",0,0.50062346298239
+"Bio_Exploitated",0.375955148120115,0.407274754274642
+"Bio_Exploitator",0,0.338170517841132
+"Bio_Commensalism0",0.0393140533261061,0.46129561373219
+"Bio_Ammensalism0",0,0.54235718281635
+"Bio_Interaction_Diversity",0,0.437136973573898
+"VFA_sdstrength.all",0,0.751926493913012
+"Fingerprint_sdstrength.all",0,0.456370949662003
+"Methanogen_sdstrength.all",0,0.323809126672329
+"Other_taxa_sdstrength.all",0,0.385456239793372
+"Methanogen_modularity",0,0.418261716851426
+"VFA_deig",0,0.511329369704194
+"Methanogen_deig",0,0.354932689694909
+"Other_taxa_deig",0,0.464914215927466
+"VFA_strength.in",0,0.703222641334441
+"Fingerprint_strength.in",0,0.523036324092537
+"Methanogen_strength.in",0,0.294277086614893
+"Acetogen_strength.in",0.233223801857581,0.899860420766632
+"Other_taxa_strength.in",0,0.684790923432927
+"VFA_strength.out",0,0.287938097276125
+"Fingerprint_strength.out",0,0.557848196398698
+"Methanogen_strength.out",0,0.639034019513049
+"Acetogen_strength.out",0.00912442260615467,0.721857174881282
+"Other_taxa_strength.out",0,0.563541800250995
+"Fingerprint_hub",0,0.418465406986842
+"Methanogen_hub",0.0227691248762863,0.370109210041583
+"Other_taxa_hub",0,0.335702976249752
+"VFA_auth",0,0.311248824291567
+"Fingerprint_auth",0,0.307517452021451
+"Methanogen_auth",0.212805483414383,0.329516243499326
+"Other_taxa_auth",0.151753438387966,0.593997798984552
+"Methanogen_Cooperation",0.0406068149300606,0.271188466420405
+"Methanogen_Competition",0.176551955220265,0.429320995379416
+"Acetogen_Competition",0.343499012422753,0.411287303063364
+"Other_taxa_Competition",0,0.479404432120078
+"Methanogen_Exploitated",0,0.423028623321938
+"Other_taxa_Exploitated",0.37295311637485,0.391155929737386
+"Acetogen_Exploitator",0,0.425048747546584
+"Other_taxa_Exploitator",0.118627449845895,0.308107520875265
+"Methanogen_Commensalism1",0.106637679161645,0.493545843422077
+"Methanogen_Commensalism0",0,0.510757908016168
+"Acetogen_Commensalism0",0,0.257772503438
+"Other_taxa_Commensalism0",0.0552202219798128,0.490446700232637
+"Methanogen_Ammensalism",0,0.297509714212056
+"Acetogen_Ammensalism",0.171311616776329,0.458410467166058
+"Methanogen_Ammensalism0",0,0.544800408557846
+"Acetogen_Ammensalism0",0.228415749253456,0.329189273046817
+"Other_taxa_Ammensalism0",0,0.655099464794434
+"Methanogen_Interaction_Diversity",0,0.412714592044538
+"Acetogen_Interaction_Diversity",0,0.436026029815682
+"Other_taxa_Interaction_Diversity",0,0.438603685870452
+"Feedback Whole",0,0.641534356291694
+"Feedback Chem-Bio",0,0.879041417967539
+"Feedback Chem",0,0.505139871719798
+"Feedback Bio",0,0.901627078817028
+"Feedback Methanogen",0,0.785570356160986
+"Feedback Acetogen",0,0.788891403551898
+"Feedback Methanogen-Acetogen",0,0.754500894334087
+"Feedback VFA-Fingerprint-Methanogen",0,0.485398308211453

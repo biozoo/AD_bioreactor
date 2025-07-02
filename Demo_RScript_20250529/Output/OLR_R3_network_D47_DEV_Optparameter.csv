@@ -1,0 +1,86 @@
+"variable","w","E","tau","theta","rho"
+Chem_Mean_Int_strength,27,1,1,0,0.537307885896949
+Bio -> Chem,21,1,1,0,0.529760065054699
+Chem -> Bio,27,1,1,0,0.891017946749581
+Bio_Mean_Int_strength,23,2,1,0,0.749127769068566
+VFA_Mean_Int_strength,15,1,1,0,0.137278117158959
+Methanogen -> VFA,27,1,1,0,0.616947330319099
+Acetogen -> VFA,21,1,1,0,0.52629783748574
+Other_taxa -> VFA,15,3,1,0,0.0543399661166392
+VFA -> Fingerprint,27,1,1,0,0.666945161634334
+Fingerprint_Mean_Int_strength,15,1,1,0,0.26772543849838
+Methanogen -> Fingerprint,15,6,1,0,0.232971940630032
+Other_taxa -> Fingerprint,19,7,1,0,0.250008097951733
+Fingerprint -> Methanogen,27,6,1,0,0.526083633732602
+Other_taxa -> Methanogen,23,1,1,0,0.519185297815208
+VFA -> Acetogen,39,1,1,0,0.322941720230277
+Fingerprint -> Acetogen,15,5,1,0,0.171715768484091
+Methanogen -> Acetogen,19,8,1,0,0.0186654733122283
+Acetogen_Mean_Int_strength,15,6,1,0,0.0859198827975708
+Other_taxa -> Acetogen,17,1,1,0,0.390863213907318
+VFA -> Other_taxa,27,1,1,0,0.5559062083584
+Fingerprint -> Other_taxa,27,4,1,0,0.838719256842413
+Methanogen -> Other_taxa,15,6,1,0,0.0785354495787387
+Other_taxa_Mean_Int_strength,23,2,1,0,0.69019545922575
+Chem_sdstrength.all,19,2,1,0,0.349193100218254
+Bio_sdstrength.all,27,3,1,0,0.771083165745673
+Bio_deig,17,2,1,0,0.230073487806516
+Bio_Competition,27,2,1,0,0.517493484820366
+Bio_Exploitated,15,6,1,0,0.0060260952203865
+Bio_Exploitator,15,6,1,0,0.296633994960777
+Bio_Commensalism0,15,5,1,0,0.368469496897513
+Bio_Ammensalism0,27,1,1,0,0.858170080856591
+Bio_Interaction_Diversity,15,6,1,0,0.394792254190314
+VFA_sdstrength.all,23,1,1,0,0.566825409008968
+Fingerprint_sdstrength.all,15,4,1,0,0.128456894896054
+Methanogen_sdstrength.all,21,9,1,0,0.00998400333123053
+Other_taxa_sdstrength.all,27,3,1,0,0.674469882014524
+Methanogen_modularity,15,6,1,0,0.0804382719493026
+VFA_deig,21,1,1,0,0.407066413871177
+Methanogen_deig,19,8,1,0,0.288315857904696
+Other_taxa_deig,19,2,1,0,0.341744637857826
+VFA_strength.in,25,1,1,0,0.466714580611499
+Fingerprint_strength.in,17,7,1,0,0.0313568920491335
+Methanogen_strength.in,21,9,1,0,0.0405952155779411
+Acetogen_strength.in,27,1,1,0,0.751173769370923
+Other_taxa_strength.in,15,5,1,0,0.226605352277166
+VFA_strength.out,27,1,1,0,0.660986593997818
+Fingerprint_strength.out,25,1,1,0,0.824333583934988
+Methanogen_strength.out,15,6,1,0,0.206371583072355
+Acetogen_strength.out,27,1,1,0,0.693156415283451
+Other_taxa_strength.out,25,1,1,0,0.553793879013155
+Fingerprint_hub,17,7,1,0,0.135417125477078
+Methanogen_hub,15,6,1,0,0.114905428177481
+Other_taxa_hub,17,7,1,0,0.128248363919012
+VFA_auth,23,1,1,0,0.386608225068894
+Fingerprint_auth,15,6,1,0,0.238143582094603
+Methanogen_auth,25,2,1,0,0.431990377590173
+Other_taxa_auth,15,6,1,0,0.111057180947617
+Methanogen_Cooperation,17,2,1,0,0.258140951054926
+Methanogen_Competition,15,3,1,0,0.0970870442793452
+Acetogen_Competition,19,3,1,0,0.131792158089173
+Other_taxa_Competition,31,2,1,0,0.507029600463098
+Methanogen_Exploitated,17,4,1,0,0.216838785104405
+Other_taxa_Exploitated,29,2,1,0,0.502743510263113
+Acetogen_Exploitator,17,7,1,0,0.169193385316502
+Other_taxa_Exploitator,15,6,1,0,0.191256188988788
+Methanogen_Commensalism1,15,3,1,0,0.560324688921148
+Methanogen_Commensalism0,23,4,1,0,0.661681790642919
+Acetogen_Commensalism0,15,5,1,0,0.169248110212652
+Other_taxa_Commensalism0,17,6,1,0,0.24472296092311
+Methanogen_Ammensalism,21,4,1,0,0.385565745189207
+Acetogen_Ammensalism,15,4,1,0,0.00305213347103317
+Methanogen_Ammensalism0,15,6,1,0,0.149232931023946
+Acetogen_Ammensalism0,19,8,1,0,0.0171761984401548
+Other_taxa_Ammensalism0,27,1,1,0,0.881853451737142
+Methanogen_Interaction_Diversity,15,5,1,0,0.386122010902527
+Acetogen_Interaction_Diversity,15,5,1,0,0.281617844602785
+Other_taxa_Interaction_Diversity,15,6,1,0,0.350765459854349
+Feedback Whole,17,7,1,0,0.422570216186672
+Feedback Chem-Bio,21,2,1,0,0.690197152380662
+Feedback Chem,27,1,1,0,0.526922427126689
+Feedback Bio,21,2,1,0,0.72404427773471
+Feedback Methanogen,27,1,1,0,0.767155871800845
+Feedback Acetogen,21,1,1,0,0.641812999932387
+Feedback Methanogen-Acetogen,19,3,1,0,0.338340491462957
+Feedback VFA-Fingerprint-Methanogen,17,1,1,0,0.574366807413959
