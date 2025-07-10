@@ -29,7 +29,7 @@ Derived datasets from the computations performed in the R scripts (Sections 1a a
 
 _3. Data_
 a) Supplementary dataset:
-Data S1: Details of selected OTUs, metabolites, and network properties.
+Data_S1.xlsx: Details of selected OTUs, metabolites, and network properties.
 b) Reactor Datasets:
 Reactor_data_envi.csv: Time series data for CH4 and relevant performance measurements, VFA, and environmental variables.
 OLR_Perturbed_finger_D47.csv: Time series data for chemical fingerprint in the perturbed reactor.
