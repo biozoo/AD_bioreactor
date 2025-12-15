@@ -1,7 +1,7 @@
 # R code for plotting Fig. 5
 rm(list = ls());gc()
 # Set path
-OPath <- 'D:/data/Cooperation/Prodigio/Code/Demo_RScript_20250529'
+OPath <- 'C:/data/Cooperation/Prodigio/Code/Demo_RScript_20250529'
 setwd(OPath)
 
 library(factoextra)
@@ -18,8 +18,8 @@ set.seed(seed)
 SaveFile <- T #T/F for saving files
 
 tipp <- 38+1
-tipp2 <- 44+1
-nd <- 46+1
+tipp2 <- 43+1
+nd <- 47
 tind.o <- 1:nd
 
 ################################################################################
@@ -206,12 +206,12 @@ for(i in 1:NCOL(crnotu3)){
   cht.t <- as.numeric(mv.tmp.t0[c('warn_time')])
   tarid <- as.character(mv.tmp.t0['ID'])
   
-  if(mv.tmp.t0['Ttype']%in%c('D1','D2','B1','B2')){
+  if(mv.tmp.t0['Ttype']%in%c('C1','C2','B1','B2')){
     ind.r <- as.numeric(ceiling(cht.t)):as.numeric((nrg-1)+ceiling(cht.t)); 
     indi <- which(apply(matrix(as.matrix(cotrds.ary[i,,ind.r]),ncol=nrg)>0,1,all))
     mv.tmp.t2 <- mv.tmp[indi,]
     mv.tmp.t2 <- mv.tmp.t2%>%mutate(contribution=apply(matrix(as.matrix(cotrds.ary[i,indi,ind.r]),ncol=nrg),1,sum))%>%
-      filter(Ttype%in%c('B1','B2','D1','D2'))%>%arrange(desc(warn_time))%>%filter((warn_time)<trunc(cht.t))
+      filter(Ttype%in%c('B1','B2','C1','C2'))%>%arrange(desc(warn_time))%>%filter((warn_time)<trunc(cht.t))
     tarid2 <- mv.tmp.t2[,'ID']
     contri <- mv.tmp.t2[,'contribution']
   }else{tarid2 <- NA; contri <- NA}
@@ -337,7 +337,7 @@ domisp2[grep('OTU_',domisp2)] <- clasdo[domisp2[grep('OTU_',domisp2)],'Finest_ta
 V(g)$color <- vcol
 V(g)$label <- domisp2
 V(g)$label.cex <- 0.7
-V(g)$size <- c(1, ccm.crnotu[domisp])*10 # Node size is scaled according to the strength of causal influences on CH4
+V(g)$size <- c(1, ccm.crnotu[domisp])*8 # Node size is scaled according to the strength of causal influences on CH4
 V(g)$shape <- shape.bi
 
 E(g)$arrow.size=0.3
@@ -347,27 +347,16 @@ col.code=colfunc(102)[-1]
 w.per=round(ecdf(E(g)$weight)(E(g)$weight)*100)+1
 E(g)$color=col.code[w.per]
 
-#win.graph(100,60)
-
-#postscript(paste('D:/data/Cooperation/Prodigio/Manuscript/Figure/D47/Cascading diagram.eps',sep=''), fonts=c("serif", "Palatino"))
+win.graph(100,60)
 windows(160,160);
-n <- 100
-x_seq <- seq(0, tipp2-1, length.out = tipp2)
-y_seq <- seq(0, tipp2-1, length.out = tipp2)
-z <- repmat(c(envi[(1:tipp),'CODt_O1'],rep(NA,tipp2-tipp)),1,tipp2)   # 用 x 作為漸層依據
-image(x_seq, y_seq, z,
-      col = colorRampPalette(c("white", "#fed5b1"))(n),
-      useRaster = TRUE,xlim=c(-4.5,43),axes=F,
-      xlab = "", ylab = "")
-par(new=T)
-
+#postscript(paste('D:/data/Cooperation/Prodigio/Manuscript/Figure/Domino effect_verc_ls.eps',sep=''), fonts=c("serif", "Palatino"))
 plot(g, layout=mylay, vertex.label.family="serif",cex.lab=5,edge.label.family="Palatino",
       vertex.label.cex=0.7,edge.label.cex=2, xlab = "Transition time", ylab='')
 legend('topright', names(ucol), pch=rep(16,length(ucol)), col=ucol, bty='n',cex=1)
 axis(side=1,at=round(2*(seq(0,40,10)-min(mylay[,1]))/(max(mylay[,1])-min(mylay[,1]))-1,2), labels =seq(0,40,10))
 
-rescale <- function(x){y <- round(2*(x-min(mylay[,1]))/(max(mylay[,1])-min(mylay[,1]))-1,2);return(y)}
-polygon(x=rescale(c(1,tipp,tipp2)-1)[c(2:3,3:2)],y=rep(c(-1.1,-0.9),each=2), col="orange",density=15, border="white")
+tipp.poly=round(2*(c(0,tipp,tipp2)-min(mylay[,1]))/(max(mylay[,1])-min(mylay[,1]))-1,2)
+polygon(x=tipp.poly[c(2:3,3:2)],y=rep(c(-1.1,-0.9),each=2), col="orange",density=15, border="white")
 
 #Display the graph and the legend.
 ordered <- order(col.code)
@@ -449,7 +438,7 @@ col.code2=colfunc2(102)[-1]
 V(g2)$color <- vcol2
 V(g2)$label <- domisp3
 V(g2)$label.cex <- 0.7
-V(g2)$size <- c(1, ccm.crnotu[c(domisp,domisp.mn)])*10
+V(g2)$size <- c(1, ccm.crnotu[c(domisp,domisp.mn)])*8
 V(g2)$shape <- shape.bi2
 
 E(g2)$arrow.size <- 0.3
@@ -457,26 +446,15 @@ E(g2)$width <- c(rep(1.2, length(E(g)$weight)),rep(0.8, length(E(g2)$weight)-len
 w.per <- c(round(ecdf(E(g2)$weight)(E(g2)$weight)*100))
 E(g2)$color <- c(col.code[w.per[1:length(E(g)$weight)]+1],col.code2[w.per[-c(1:length(E(g)$weight))]+1])
 
-#postscript(paste('D:/data/Cooperation/Prodigio/Manuscript/Figure/D47/Cascading diagram_reinforced.eps',sep=''), fonts=c("serif", "Palatino"))
 windows(160,160);
-n <- 100
-x_seq <- seq(0, tipp2-1, length.out = tipp2)
-y_seq <- seq(0, tipp2-1, length.out = tipp2)
-z <- repmat(c(envi[(1:tipp),'CODt_O1'],rep(NA,tipp2-tipp)),1,tipp2)   # 用 x 作為漸層依據
-image(x_seq, y_seq, z,
-      col = colorRampPalette(c("white", "#fed5b1"))(n),
-      useRaster = TRUE,xlim=c(-4.5,43),axes=F,
-      xlab = "", ylab = "")
-par(new=T)
-
+#postscript(paste('./Manuscript/Figure/Domino effect_verc_ls_mn.eps',sep=''), fonts=c("serif", "Palatino"))
 plot(g2, layout=mylay2, vertex.label.family="serif",cex.lab=5,
      edge.label.family="Palatino", vertex.label.cex=0.7,edge.label.cex=2, xlab = "Warning time", ylab='')
 legend('topright', names(ucol), pch=rep(16,length(ucol)), col=ucol, bty='n',cex=1)
 axis(side=1,at=round(2*(seq(0,40,10)-min(mylay2[,1]))/(max(mylay2[,1])-min(mylay2[,1]))-1,2), labels =seq(0,40,10))
 
-rescale <- function(x){y <- round(2*(x-min(mylay2[,1]))/(max(mylay2[,1])-min(mylay2[,1]))-1,2);return(y)}
-polygon(x=rescale(c(1,tipp,tipp2)-2)[c(2:3,3:2)],y=rep(c(-1.1,-0.9),each=2), col="orange",density=15, border="white")
-
+tipp.poly=round(2*(c(0,tipp,tipp2)-min(mylay2[,1]))/(max(mylay2[,1])-min(mylay2[,1]))-1,2)
+polygon(x=tipp.poly[c(2:3,3:2)],y=rep(c(-1.1,-0.9),each=2), col="orange",density=15, border="white")
 
 #Display the graph and the legend.
 ordered <- order(col.code)
@@ -711,6 +689,7 @@ stripchart(formula.t, vertical = TRUE, data = da.box.p, cex=0.5,
            method = "jitter", add = TRUE, pch = 20, col = 'blue')
 kruskal.test(formula.t,da.box.p)
 dunn.test::dunn.test(da.box.p[,vb], as.factor(da.box.p[,'domino']))
+
 
 
 
