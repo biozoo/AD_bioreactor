@@ -160,3 +160,19 @@ if(SaveFile){
   # Save interaction Jacobian matrices at all time points
   write.csv(smap.demo[['jcof']],paste('./Output/',da.name,'_nin',nin,'_cvunit',cv.unit,'_',ptype,'_jcof_Nmvx_Rallx_demo_NEW.csv',sep=''),row.names=F)
 }
+
+# Check the predicted result and prediction skill 
+win.graph(100,50)
+par(mar=c(4,4,1,4))
+
+timm <- unique(smap.demo[['jcof']][,'time'])
+pred <- apply(cbind(rep(1),ds)*smap.demo[['jcof']][,-c(1:3)],1,sum)
+obs <- ds[,'CH4']
+plot(obs~timm,type='o', xlab='Days', ylim=range(c(obs, pred),na.rm=T),
+     ylab='Normalized CH4 production',lwd=2,pch=16,cex=2)
+lines(pred~timm,type='o', col='blue',lwd=2,pch=16,cex=2)
+tipp <- 38; tipp2 <- 44
+polygon(x=c(tipp,tipp2,tipp2,tipp),y=c(-10,-10,10,10), col="orange",density=15, border="white")
+legend('bottomleft',c('Observation','Prediction',paste('Prediction skill =',round(smap.demo[['nr.out']][,'rho'],3))),
+       pch=c(16,16,NA),col=c('black','blue',NA),lty=c(1,1,NA),bty='n',cex=2)
+
