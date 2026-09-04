@@ -14,7 +14,7 @@ Fig2C_Rscripts_data_for_metaomics.zip.
 b) Analytical Scripts:
 Demo_CCMSelect_OTU_metabolite_D47.R: Performs CCM causality analysis to select those OTUs and metabolites with signficant causal effects on CH4 production.
 Demo_DEV_CRNOTU_D47.R: Conducts DEV early-warning signal analysis for OTUs, metabolites, and network properties.
-Demo_MDR_metaboliteOTUs.R: Reconstructs the dynamic interactome between 250 OTUs and 131 metabolites using MDR S-map.
+Demo_MDR_metaboliteOTUs.R: Reconstructs the dynamic interactome between 234 microbial OTUs, 147 chemical fingerprints, and 7 VFAs using MDR S-map.
 Demo_MDR_InfluenceOnCH4.R: Quantifies OTU and metabolite influences on CH4 production near the tipping point (Day 37).
 Demo_NetworkProperty_computation.R: Computes network properties displayed in Figure 3 for each sampling day.
 c) Supporting Functions:
