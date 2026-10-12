@@ -176,7 +176,7 @@ ccm.fast.inferM2 <- function(ds,inferM=NULL,Epair=T,cri='rmse',Emax=10, deseason
             p1 <- kend$sl[1]/2
             if(tau<0){p1 <- 1-p1}
             # Causation is significant only if both (1) Kendall's tau and (2) terminal rho are significantly larger than zero
-            ccm.sig[i,j] <- (tau>0)*(kend$sl[1]<0.05)*(termrho>crirho) # ccm.sig records the significance of each CCM
+            ccm.sig[i,j] <- (tau>0)*(kend$sl[1]<0.05)*(p2<0.05) # ccm.sig records the significance of each CCM
           }else{ccm.sig[i,j] <- 0}
           ccm.rho[i,j] <- termrho
           ccm.pmax[i,j] <- max(p1,p2)
@@ -345,187 +345,48 @@ fdr_control_ccm <- function(pmax,
 }
 
 
-#' FDR Control for CCM pmax Values (Adaptive BH with automated lambda)
-fdr_control_ccm3 <- function(pmax,
-                            fdr.level = 0.05,
-                            lambda_seq = seq(0.1, 0.9, by = 0.05),
-                            names = NULL) {
+#' Find empirical q-value for BH and Adaptive BH
+#'
+#' Searches a grid of FDR levels to find the q at which each procedure
+#' retains a number of significant variables closest to nsp.sig.
+find_empirical_q <- function(p.max,
+                             nsp.sig,
+                             q_grid = seq(0.001, 0.2, by = 0.001),
+                             verbose = FALSE) {
   
-  # ============================================================
-  # 1. Input validation and cleanup
-  # ============================================================
+  # Retained counts across the grid
+  retained_BH <- sapply(q_grid, function(q) {
+    fdr_control_ccm(pmax = p.max, fdr.level = q)$retained_BH
+  })
   
-  if (!is.numeric(pmax)) {
-    stop("Error: 'pmax' must be a numeric vector.")
-  }
+  retained_adaptive <- sapply(q_grid, function(q) {
+    fdr_control_ccm(pmax = p.max, fdr.level = q)$retained_adaptive
+  })
   
-  if (any(pmax < 0 | pmax > 1, na.rm = TRUE)) {
-    warning("Some pmax values are outside [0, 1]. They will be clamped.")
-    pmax <- pmax(pmin(pmax, 1), 0)
-  }
+  # Absolute differences from target
+  diff_BH       <- abs(retained_BH       - nsp.sig)
+  diff_adaptive <- abs(retained_adaptive - nsp.sig)
   
-  # Remove NA values
-  valid_idx <- which(!is.na(pmax))
-  pmax_clean <- pmax[valid_idx]
+  # Minimizing q
+  i_BH       <- which.min(diff_BH)
+  i_adaptive <- which.min(diff_adaptive)
   
-  if (length(pmax_clean) == 0) {
-    stop("Error: No valid (non-NA) pmax values found.")
-  }
-  
-  n_total <- length(pmax_clean)
-  
-  # Handle names if provided
-  if (!is.null(names)) {
-    if (length(names) != length(pmax)) {
-      warning("Length of 'names' does not match length of 'pmax'. Names will be ignored.")
-      names_clean <- NULL
-    } else {
-      names_clean <- names[valid_idx]
-    }
-  } else {
-    names_clean <- NULL
-  }
-  
-  # ============================================================
-  # 2. Pre-correction count (raw pmax < fdr.level)
-  # ============================================================
-  
-  n_raw <- sum(pmax_clean < fdr.level, na.rm = TRUE)
-  
-  # ============================================================
-  # 3. Standard Benjamini-Hochberg (BH) procedure
-  # ============================================================
-  
-  q_BH <- stats::p.adjust(pmax_clean, method = "BH")
-  sig_BH <- sum(q_BH < fdr.level, na.rm = TRUE)
-  threshold_BH <- if (sig_BH > 0) {
-    max(pmax_clean[q_BH < fdr.level], na.rm = TRUE)
-  } else {
-    NA_real_
-  }
-  
-  # ============================================================
-  # 4. Adaptive BH with automated lambda selection
-  #    Based on Storey's method but with automatic lambda choice
-  # ============================================================
-  
-  # ---- 4a. Estimate pi0 across multiple lambda values ----
-  pi0_estimates <- numeric(length(lambda_seq))
-  for (j in seq_along(lambda_seq)) {
-    lambda <- lambda_seq[j]
-    pi0_estimates[j] <- sum(pmax_clean > lambda) / (n_total * (1 - lambda))
-    pi0_estimates[j] <- min(pi0_estimates[j], 1)
-  }
-  
-  # ---- 4b. Choose lambda with minimum pi0 estimate ----
-  # This is more conservative than fixed lambda=0.8 when data has weak signals
-  min_idx <- which.min(pi0_estimates)
-  pi0_est <- pi0_estimates[min_idx]
-  chosen_lambda <- lambda_seq[min_idx]
-  
-  # Apply conservative constraints
-  pi0_est <- min(pi0_est, 1)
-  pi0_est <- max(pi0_est, 0.1)  # Conservative lower bound
-  
-  # Optional: apply smoothing to avoid over-fitting
-  # Use LOESS if more than 5 lambda values
-  if (length(lambda_seq) >= 5) {
-    # Fit a smooth curve and take the minimum in a window
-    # This is the approach used in qvalue package
-    loess_fit <- stats::loess(pi0_estimates ~ lambda_seq, degree = 2)
-    pi0_smooth <- stats::predict(loess_fit, newdata = data.frame(lambda_seq = lambda_seq))
-    
-    # Conservative estimate: use 3rd quartile or minimum (less aggressive)
-    pi0_est <- min(pi0_est, stats::median(pi0_smooth))
-    pi0_est <- max(pi0_est, 0.1)
-  }
-  
-  # ---- 4c. Apply BH adjustment with estimated pi0 ----
-  # Sort p-values in ascending order
-  p_sorted <- sort(pmax_clean)
-  
-  # Calculate adjusted p-values with pi0 correction
-  p_adj <- numeric(n_total)
-  for (i in 1:n_total) {
-    p_adj[i] <- min(1, pi0_est * n_total * p_sorted[i] / i)
-  }
-  
-  # Enforce monotonicity (non-decreasing)
-  for (i in (n_total - 1):1) {
-    if (p_adj[i] > p_adj[i + 1]) {
-      p_adj[i] <- p_adj[i + 1]
-    }
-  }
-  
-  # Map back to original order
-  q_adaptive <- p_adj[match(pmax_clean, p_sorted)]
-  
-  # ---- 4d. Count significant results ----
-  sig_adaptive <- sum(q_adaptive < fdr.level, na.rm = TRUE)
-  threshold_adaptive <- if (sig_adaptive > 0) {
-    max(pmax_clean[q_adaptive < fdr.level], na.rm = TRUE)
-  } else {
-    NA_real_
-  }
-  
-  # ============================================================
-  # 5. Build summary table
-  # ============================================================
-  
-  summary_df <- data.frame(
-    Method = c(
-      paste0("Pre-correction (raw pmax < ", fdr.level, ")"),
-      paste0("Standard BH (q = ", fdr.level, ")"),
-      paste0("Adaptive BH (q = ", fdr.level, ", auto-lambda)")
-    ),
-    Retained = c(n_raw, sig_BH, sig_adaptive),
-    Threshold = c(fdr.level, threshold_BH, threshold_adaptive),
-    stringsAsFactors = FALSE
+  out <- list(
+    q_BH         = q_grid[i_BH],
+    q_adaptiveBH = q_grid[i_adaptive]
   )
   
-  # ============================================================
-  # 6. Build detailed results data frame
-  # ============================================================
-  
-  results_df <- data.frame(
-    pmax = pmax_clean,
-    BH_q = q_BH,
-    BH_sig = q_BH < fdr.level,
-    Adaptive_q = q_adaptive,
-    Adaptive_sig = q_adaptive < fdr.level,
-    stringsAsFactors = FALSE
-  )
-  
-  # Add names if provided
-  if (!is.null(names_clean)) {
-    results_df$Label <- names_clean
-    results_df <- results_df[, c("Label", setdiff(names(results_df), "Label"))]
+  if (verbose) {
+    out$grid <- data.frame(
+      q                 = q_grid,
+      retained_BH       = retained_BH,
+      retained_adaptive = retained_adaptive
+    )
   }
   
-  # Order by pmax (smallest first)
-  results_df <- results_df[order(results_df$pmax), ]
-  rownames(results_df) <- NULL
-  
-  # ============================================================
-  # 7. Return results
-  # ============================================================
-  
-  return(list(
-    summary = summary_df,
-    results = results_df,
-    pi0 = pi0_est,
-    chosen_lambda = chosen_lambda,
-    pi0_estimates = pi0_estimates,
-    lambda_seq = lambda_seq,
-    method = "Adaptive BH (Storey with automated lambda)",
-    retained_BH = sig_BH,
-    retained_adaptive = sig_adaptive,
-    threshold_BH = threshold_BH,
-    threshold_adaptive = threshold_adaptive,
-    n_total = n_total,
-    fdr_level = fdr.level
-  ))
+  return(out)
 }
+
 ###############################################################################
 ## Embedding multiview SSR based on causal variable selected by CCM 
 esim.lag.demo2 <- function(ds,ccm.rho,ccm.sig,inferM=NULL,Ed,kmax=10000,kn=100,max_lag=3,Emax=Emax, seed=NULL){

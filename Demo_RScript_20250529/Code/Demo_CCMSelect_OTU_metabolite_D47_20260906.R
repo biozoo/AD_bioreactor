@@ -45,7 +45,8 @@ doind.c <- which(apply(compo.c!=0,2,sum,na.rm=T)>=(nd*pcri)& !names(compo.c)%in%
 doind.p <- which(apply(compo.p!=0,2,sum,na.rm=T)>=(nd*pcri)& !names(compo.c)%in%chlorop)
 
 (doind <- intersect(doind.c,doind.p))#
-nsp <- length(doind)
+length(doind) # Number of dominant species
+(nsp <- length(doind))
 otu.c <- compo.c[,doind]
 otu.p <- compo.p[,doind]
 
@@ -56,14 +57,21 @@ inferM <- matrix(0, nsp+1, nsp+1);inferM[1,-1] <- 1
 ccm.c <- ccm.fast.inferM2(ds=otu.cs,inferM,Lmin=5,Lint=10)
 ccm.p <- ccm.fast.inferM2(ds=otu.ps,inferM,Lmin=5,Lint=10)
 
-p.max <- ccm.p[[3]][1,-1]
-
-fdr.con <- fdr_control_ccm(pmax=p.max,fdr.level = 0.05)
-fdr.con
-
 (spind <- which(ccm.p[[2]][1,]==1)-1)
 ccm.pw <- ccm.p[[1]][1,-1][spind]
 ccm.cw <- ccm.c[[1]][1,-1][spind]
+(nsp.sig <- length(spind))
+
+p.max <- ccm.p[[3]][1,-1]
+
+# Results of BH and adaptive BH procedures under FDR q = 0.05
+fdr.con <- fdr_control_ccm(pmax = p.max, fdr.level = 0.05)
+
+# Find empirical q given the number of CCM-selected OTUs
+res <- find_empirical_q(p.max = p.max, nsp.sig = nsp.sig)
+res$q_BH
+res$q_adaptiveBH
+
 
 ccm.otu <- data.frame(Variable=colnames(otu.p)[spind],CCM_Control=ccm.cw, CCM_Perturbed=ccm.pw)
 
@@ -163,7 +171,7 @@ ind.t <- intersect(ind.tp,ind.tc)#
 finger.c <- finger.co[,ind.t]
 finger.p <- finger.po[,ind.t]
 
-nsp <- NCOL(finger.p)
+(nsp <- NCOL(finger.p))
 
 ada.c <- apply(cbind(envi[,c('CH4_C1')],finger.c),2,scale)
 ada.p <- apply(cbind(envi[,c('CH4_O1')],finger.p),2,scale)
@@ -185,12 +193,21 @@ p.max <- ccm.rp[[3]][1,-1]
 fdr.con <- fdr_control_ccm(pmax=p.max,fdr.level = 0.05)
 fdr.con
 
-
 ccm.rpw <- c(ccm.vfa[[1]][1,-1][spind.vfa],ccm.rp[[1]][1,-1][spind.tp])
 ccm.rcw <- ccm.rc[[1]][1,-1][spind.tp]
 
 
-(spind <- spind.tp)#intersect(spind.p1,spind.p))
+(spind <- spind.tp)
+(nsp.sig <- length(spind))
+
+# Results of BH and adaptive BH procedures under FDR q = 0.05
+fdr.con <- fdr_control_ccm(pmax = p.max, fdr.level = 0.05)
+
+# Find empirical q given the number of CCM-selected metabolites
+res <- find_empirical_q(p.max = p.max, nsp.sig = nsp.sig)
+res$q_BH
+res$q_adaptiveBH
+
 
 ccm.crn <- data.frame(Variable=c(colnames(VFA),colnames(finger.p)[spind]),
                       CCM_Control=c(rep(NA,length(ccm.rpw)-length(ccm.rcw)),ccm.rcw), 
